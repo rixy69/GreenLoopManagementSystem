@@ -1,0 +1,118 @@
+GreenLoop Management System
+Project Details and Requirements Summary
+
+Source requirement document:
+Higher Diploma in Information Technology
+Object Oriented Programming (Java)
+Year 1 Semester 2 - 2026
+Group Project Specification
+
+Required business scope from the document:
+1. Manage Product Catalogue
+2. Manage Clients
+3. Manage Stock / Inventory
+4. Manage Delivery Agents
+5. Process Client Orders
+6. Assign Delivery Agents to Orders
+7. Generate Monthly Sales & Inventory Reports
+8. Send Email Notifications to Clients when orders are dispatched
+9. Send Email Notifications to Delivery Agents when a new delivery is assigned
+
+Current project implementation status:
+1. Product Catalogue:
+Implemented as Parts / Inventory management.
+The system uses "Parts" and "Inventory" terminology instead of "Packaging Products".
+Eco-rating is not currently stored in the database.
+
+2. Clients:
+Implemented as Customers management.
+Add, edit, delete, search, and order linkage are available.
+
+3. Stock / Inventory:
+Implemented.
+Inventory quantity, location, notifications, and reorder-related low-stock handling are included.
+
+4. Delivery Agents:
+Partially implemented through Employees and Jobs.
+The system uses Employees, Roles, and Job assignment rather than a dedicated Delivery Agent + Vehicle module.
+Vehicle details are not currently stored.
+
+5. Process Client Orders:
+Implemented.
+Orders, order parts, totals, and service charges are supported.
+
+6. Assign Delivery Agents to Orders:
+Partially implemented as job assignment to employees.
+Dedicated delivery scheduling/status wording is not fully aligned with the specification wording.
+
+7. Monthly Sales & Inventory Reports:
+Implemented in Sales Report panel and low-stock notifications.
+
+8. Email Notifications to Clients:
+Implemented through job completion / order-related email flow.
+
+9. Email Notifications to Delivery Agents:
+Implemented through employee job assignment emails.
+
+Important note on requirements matching:
+The project substantially covers the required workflow, but some names and domain concepts differ from the specification.
+Main differences are:
+- Customers instead of Clients
+- Parts / Products instead of Packaging Product Catalogue
+- Employees / Jobs instead of a dedicated Delivery Agents + Vehicle module
+- No explicit eco-rating field
+- No explicit vehicle-details field
+
+Portability and sharing status:
+This project has been cleaned so it can be moved from Downloads to Desktop or shared with another person more safely.
+The following portability fixes were applied:
+- Removed hardcoded absolute image paths from the main runtime flow
+- Added shared resource loading with project-relative fallback logic
+- Updated run.bat so it does not depend on one fixed local JDK path
+- Updated build.bat so it does not depend on one fixed local JDK path
+- Added shared reusable footer component for UI consistency
+
+What still must exist on the target machine:
+1. Java must be installed, or JAVA_HOME must point to a valid JDK
+2. MySQL must be installed and running
+3. The database script GreenLoop_db.sql must be executed
+4. The lib folder must remain included with the project
+
+Database defaults used by the project:
+- Database name: greenloop
+- MySQL username: root
+- MySQL password: root
+- Host: localhost
+- Port: 3306
+
+How to run the project after moving it:
+1. Move the entire GreenLoopSystem folder as one complete folder
+2. Do not separate src, lib, and resources
+3. Open Command Prompt inside GreenLoopSystem
+4. Run build.bat
+5. Run run.bat
+
+Database restore steps:
+1. Open MySQL Workbench or mysql command line
+2. Run the full script from GreenLoop_db.sql
+3. Confirm the database greenloop was created
+4. Start the application using run.bat
+
+Suggested first login:
+Username: rixy1
+Password: Rixy@8248
+
+Project structure overview:
+- src/ : Java source code
+- resources/ : images and UI assets
+- lib/ : required third-party jars
+- GreenLoop_db.sql : database schema and seed data
+- run.bat : project launcher
+- build.bat : compilation script
+
+Recommendation:
+If you want the project to match the requirement document even more closely, the next improvements should be:
+1. Rename customer/client and parts/product labels consistently
+2. Add eco-rating to product records
+3. Add delivery-agent-specific role and vehicle details
+4. Rename job workflow to delivery workflow where appropriate

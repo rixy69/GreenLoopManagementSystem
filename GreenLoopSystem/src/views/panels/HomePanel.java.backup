@@ -1,0 +1,293 @@
+package views.panels;
+
+import models.Employee;
+import services.CS;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import javax.swing.*;
+
+public class HomePanel extends JPanel {
+    private Employee employee;
+    private ImageIcon videoIcon;
+    private int iW=300,iH=240;
+    private JLabel welcomeLabel;
+    private JLabel titleLabel;
+    private JLabel label_1_k;
+    private JLabel label_1_v;
+    private JLabel label_2_k;
+    private JLabel label_2_v;
+    private JLabel label_3_k;
+    private JLabel label_3_v;
+    private JLabel label_4_k;
+    private JLabel label_4_v;
+    private JLabel label_5_k;
+    private JLabel label_5_v;
+    private JLabel label_6_k;
+    private JLabel label_6_v;
+    private JLabel label_7_k;
+    private JLabel label_7_v;
+    private JLabel label_8_k;
+    private JLabel label_8_v;
+    private JLabel label_9_k;
+    private JLabel label_9_v;
+    private JLabel label_10_k;
+    private JLabel label_10_v;
+    private JLabel videoDisplayLabel;
+
+    private String teal = "#7faab5";
+    private String facebookBlue = "#0075FB";
+    private String violet = "#8f00ff";
+    private String darkViolet = "#5c05a1";
+    private String emeraldGreen = "#1abc9c";
+    private String lightGreen = "#d5f4e6";
+
+    private String bgColor = darkViolet;
+    private String fgColor = "#FFFFFF";
+
+
+    public HomePanel(Employee employee) {
+        this.employee = employee;
+        loadVideoFromResource();
+        this.createUIComponents();
+    }
+
+    private void loadVideoFromResource(){
+        try {
+            // Try to load product.mp4 first
+            java.io.File videoFile = new java.io.File("product.mp4");
+            if (videoFile.exists()) {
+                // Create a thumbnail from the video by trying to load it
+                // For now, use a placeholder image with a play button overlay
+                try {
+                    // Try to create a frame from video - this is a simplified approach
+                    videoIcon = new ImageIcon(getClass().getResource("/resources/images/ship_repair_anim_01.gif"));
+                } catch (Exception e) {
+                    videoIcon = null;
+                }
+                System.out.println("✓ Product video found at: " + videoFile.getAbsolutePath());
+            } else {
+                // Load animated GIF as fallback
+                videoIcon = new ImageIcon(getClass().getResource("/resources/images/ship_repair_anim_01.gif"));
+            }
+            
+            if (videoIcon != null) {
+                int originalWidth = videoIcon.getIconWidth();
+                int originalHeight = videoIcon.getIconHeight();
+                iH = (int) (((double) iW / originalWidth) * originalHeight);
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading video animation!");
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
+
+    private void createUIComponents() {
+
+        this.setLayout(null);
+        this.setBackground(new Color(245, 248, 250));
+        
+        String name = "Welcome " + employee.getTitle() + " " + employee.getFirstName() + " " + employee.getLastName() + "!";
+
+        welcomeLabel = CS.paintLabels(this, "", name, "#1abc9c", fgColor, 0, true);
+        welcomeLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        this.add(welcomeLabel);
+        welcomeLabel.setBounds(30, 20, 900, 35);
+
+        // Create video display panel with enhanced styling
+        JPanel videoContainerPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, 
+                                    java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                // Draw shadow
+                g2d.setColor(new Color(0, 0, 0, 25));
+                g2d.fillRoundRect(3, 3, getWidth()-6, getHeight()-6, 15, 15);
+                
+                // Draw white background
+                g2d.setColor(Color.WHITE);
+                g2d.fillRoundRect(0, 0, getWidth()-3, getHeight()-3, 15, 15);
+                
+                // Draw border with gradient effect
+                g2d.setColor(new Color(26, 188, 156));
+                g2d.setStroke(new BasicStroke(3));
+                g2d.drawRoundRect(0, 0, getWidth()-3, getHeight()-3, 15, 15);
+            }
+        };
+        videoContainerPanel.setLayout(null);
+        videoContainerPanel.setBounds(30, 70, 360, 290);
+        this.add(videoContainerPanel);
+
+        // Video display label
+        videoDisplayLabel = new JLabel();
+        if (videoIcon != null) {
+            videoDisplayLabel.setIcon(videoIcon);
+        }
+        videoDisplayLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        videoDisplayLabel.setVerticalAlignment(SwingConstants.CENTER);
+        videoDisplayLabel.setBounds(15, 15, 330, 245);
+        videoContainerPanel.add(videoDisplayLabel);
+
+        // Play button overlay
+        JButton playButton = new JButton("▶ PLAY DEMO") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, 
+                                    java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                // Draw button background
+                g2d.setColor(new Color(26, 188, 156, 230));
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 8, 8);
+                
+                // Draw border
+                g2d.setColor(new Color(22, 160, 133));
+                g2d.setStroke(new BasicStroke(2));
+                g2d.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 8, 8);
+                
+                // Draw text
+                super.paintComponent(g);
+            }
+        };
+        playButton.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        playButton.setForeground(Color.WHITE);
+        playButton.setContentAreaFilled(false);
+        playButton.setBounds(210, 255, 120, 25);
+        playButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        videoContainerPanel.add(playButton);
+
+        // "Product Demo" label
+        JLabel demoLabel = new JLabel("Product Demo");
+        demoLabel.setBounds(30, 365, 360, 25);
+        demoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        demoLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        demoLabel.setForeground(new Color(44, 62, 80));
+        this.add(demoLabel);
+
+        // Stats/KPI section header
+        JPanel statsHeaderPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setColor(new Color(26, 188, 156));
+                g2d.fillRect(0, 0, this.getWidth(), 4);
+            }
+        };
+        statsHeaderPanel.setBounds(30, 405, 900, 4);
+        this.add(statsHeaderPanel);
+
+        // Account details section with better styling
+        JLabel sectionHeader = new JLabel("📋 ACCOUNT DETAILS");
+        sectionHeader.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        sectionHeader.setForeground(new Color(44, 62, 80));
+        sectionHeader.setBounds(30, 415, 200, 25);
+        this.add(sectionHeader);
+
+        titleLabel = new JLabel();
+        this.add(titleLabel);
+
+        label_1_k = CS.paintLabels(this, "    ", "Employee ID", "#34495e", "#2c3e50", 2, true);
+        label_1_v = CS.paintLabels(this, "    ", String.valueOf(employee.getEmployeeId()), "#34495e", "#27ae60", 2, true);
+
+        label_2_k = CS.paintLabels(this, "    ", "Title", "#34495e", "#2c3e50", 2, true);
+        label_2_v = CS.paintLabels(this, "    ", employee.getTitle(), "#34495e", "#27ae60", 2, true);
+
+        label_3_k = CS.paintLabels(this, "    ", "First Name", "#34495e", "#2c3e50", 2, true);
+        label_3_v = CS.paintLabels(this, "    ", employee.getFirstName(), "#34495e", "#27ae60", 2, true);
+
+        label_4_k = CS.paintLabels(this, "    ", "Last Name", "#34495e", "#2c3e50", 2, true);
+        label_4_v = CS.paintLabels(this, "    ", employee.getLastName(), "#34495e", "#27ae60", 2, true);
+
+        label_5_k = CS.paintLabels(this, "    ", "Username", "#34495e", "#2c3e50", 2, true);
+        label_5_v = CS.paintLabels(this, "    ", employee.getUsername(), "#34495e", "#27ae60", 2, true);
+
+        label_6_k = CS.paintLabels(this, "    ", "Address", "#34495e", "#2c3e50", 2, true);
+        label_6_v = CS.paintLabels(this, "    ", employee.getAddress(), "#34595e", "#27ae60", 2, true);
+
+        label_7_k = CS.paintLabels(this, "    ", "Mobile", "#34595e", "#2c3e50", 2, true);
+        label_7_v = CS.paintLabels(this, "    ", employee.getMobile(), "#34595e", "#27ae60", 2, true);
+
+        label_8_k = CS.paintLabels(this, "    ", "Email", "#34595e", "#2c3e50", 2, true);
+        label_8_v = CS.paintLabels(this, "    ", employee.getEmail(), "#34595e", "#27ae60", 2, true);
+
+        label_9_k = CS.paintLabels(this, "    ", "Schedule", "#34595e", "#2c3e50", 2, true);
+        label_9_v = CS.paintLabels(this, "    ", employee.getSchedule(), "#34595e", "#27ae60", 2, true);
+
+        label_10_k = CS.paintLabels(this, "    ", "Role", "#34595e", "#2c3e50", 2, true);
+        label_10_v = CS.paintLabels(this, "    ", employee.getRole().getRoleName(), "#34595e", "#27ae60", 2, true);
+
+        this.setBounds();
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // Draw a subtle gradient background
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, 
+                            java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        // Light background
+        Color c1 = new Color(245, 248, 250);
+        Color c2 = new Color(235, 242, 245);
+        
+        java.awt.GradientPaint gp = new java.awt.GradientPaint(
+            0, 0, c1, 0, getHeight(), c2);
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+    }
+
+
+    
+    public void setBounds(){
+        int width = this.getWidth(), height = this.getHeight();
+        int x = 30, y = 445, w_k = 160, w_v = 160, h = 22, d = 5, g = 8;
+        
+        // Employee details with better spacing
+        label_1_k.setBounds(x, y, w_k, h);
+        label_1_v.setBounds((x + w_k + g), y, w_v, h);
+        y += (d + h);
+        
+        label_2_k.setBounds(x, y, w_k, h);
+        label_2_v.setBounds((x + w_k + g), y, w_v, h);
+        y += (d + h);
+        
+        label_3_k.setBounds(x, y, w_k, h);
+        label_3_v.setBounds((x + w_k + g), y, w_v, h);
+        y += (d + h);
+        
+        label_4_k.setBounds(x, y, w_k, h);
+        label_4_v.setBounds((x + w_k + g), y, w_v, h);
+        y += (d + h);
+        
+        label_5_k.setBounds(x, y, w_k, h);
+        label_5_v.setBounds((x + w_k + g), y, w_v, h);
+        y += (d + h);
+        
+        label_6_k.setBounds(x, y, w_k, h);
+        label_6_v.setBounds((x + w_k + g), y, w_v, h);
+        y += (d + h);
+        
+        label_7_k.setBounds(x, y, w_k, h);
+        label_7_v.setBounds((x + w_k + g), y, w_v, h);
+        y += (d + h);
+        
+        label_8_k.setBounds(x, y, w_k, h);
+        label_8_v.setBounds((x + w_k + g), y, w_v, h);
+        y += (d + h);
+        
+        label_9_k.setBounds(x, y, w_k, h);
+        label_9_v.setBounds((x + w_k + g), y, w_v, h);
+        y += (d + h);
+        
+        label_10_k.setBounds(x, y, w_k, h);
+        label_10_v.setBounds((x + w_k + g), y, w_v, h);
+    }
+
+
+}

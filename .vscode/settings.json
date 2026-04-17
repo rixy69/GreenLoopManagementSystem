@@ -1,0 +1,10 @@
+{
+    "java.debug.settings.onBuildFailureProceed": true,
+    "java.project.referencedLibraries": [
+        "GreenLoopSystem/lib/**/*.jar"
+    ],
+    "java.project.sourcePaths": [
+        "GreenLoopSystem/src"
+    ],
+    "java.project.outputPath": "GreenLoopSystem/bin"
+}
